@@ -1,0 +1,51 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cstring>
+#include<string>
+using namespace std;
+int ans[100010], lin[100010],last=0;
+int main()
+{
+	memset(ans, 0, sizeof(ans));
+	int n, k, a, sum = 0, mmax = 0;
+	scanf("%d%d", &n, &k);
+	while (n--)
+	{
+		scanf("%d", &a);
+		ans[a]++;
+		mmax = max(mmax, a);
+	}
+	if (k == 0)
+	{
+		for (int i = 1; i <= mmax; i++)
+		{
+			if (ans[i])
+				sum++;
+		}
+	}
+	else
+	{
+		for (int i = 0; i <= mmax; i++)
+		{
+			if (ans[i])
+			{
+				lin[i] = ans[i];
+				lin[i + k] = max(lin[i], ans[i + k]);
+				ans[i] = 0;
+				ans[i + k] = 0;
+				if (mmax < i + 2 * k)
+					last = lin[i + k];
+				for (int j = i+2*k; j <= mmax; j += k)
+				{
+					lin[j] = max(lin[j - k], lin[j - 2 * k] + ans[j]);
+					last = lin[j];
+					ans[j] = 0;
+				}
+				sum += last;
+			}
+		}
+	}
+	printf("%d\n", sum);
+	return 0;
+}
