@@ -1,0 +1,91 @@
+#include <iostream>
+#include<algorithm>
+#include<string>
+using namespace std;
+int main()
+{
+	long long sum, num, lin;
+	int what = 10, jud;
+	string s, ss;
+	int n;
+	cin >> n;
+	jud = 0;
+	while (n--)
+	{
+		cin >> s;
+		if (s == "CLEAR")
+		{
+			sum = 0;
+			jud = 0;
+		}
+		else if (s == "ADD")
+			jud = 0;
+		else if (s == "SUB")
+			jud = 1;
+		else if (s == "MUL")
+			jud = 2;
+		else if (s == "DIV")
+			jud = 3;
+		else if (s == "MOD")
+			jud = 4;
+		else if (s == "CHANGE")
+			cin >> what;
+		else if (s == "EQUAL")
+		{
+			if (what == 10)
+				printf("%lld\n", sum);
+			else
+			{
+				lin = sum;
+				s.clear();
+				while (sum)
+				{
+					int ber = sum % what;
+					if (ber >= 10)
+						s.push_back('A' + ber - 10);
+					else
+						s.push_back('0' + ber);
+					sum /= what;
+				}
+				int size = s.size();
+				if (size > 0)
+					for (int i = size - 1; i >= 0; i--)
+						printf("%c", s[i]);
+				else
+					printf("0");
+				printf("\n");
+				sum = lin;
+			}
+		}
+		else if (s == "NUM")
+		{
+			if (what == 10)
+				cin >> num;
+			else
+			{
+				num = 0;
+				cin >> ss;
+				int size = ss.size();
+				for (int i = 0; i < size; i++)
+				{
+					num *= what;
+					if (ss[i] >= '0'&&ss[i] <= '9')
+						num += (ss[i] - '0');
+					else
+						num += (ss[i] - 'A' + 10);
+				}
+			}
+			if (jud == 0)
+				sum += num;
+			else if (jud == 1)
+				sum -= num;
+			else if (jud == 2)
+				sum *= num;
+			else if (jud == 3)
+				sum /= num;
+			else
+				sum %= num;
+		}
+	}
+	return 0;
+}
