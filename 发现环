@@ -1,0 +1,61 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cstring>
+#include<string>
+#include<vector>
+#include<map>
+using namespace std;
+bool ans[110][110];
+bool yes[110];
+int coun[100010];
+vector<int>arr[100010];
+void dfs(int i,int last)
+{
+	int num = 0;
+	while (arr[i][num] == last)
+		num++;
+	if (coun[arr[i][num]] == 2)
+	{
+		coun[arr[i][num]] = 0;
+		dfs(arr[i][num], i);
+	}
+	else
+		coun[arr[i][num]] -= 1;
+}
+int main()
+{
+	memset(coun, 0, sizeof(coun));
+	int n,a,b,lin;
+	scanf("%d", &n);
+	lin = n;
+	while (n--)
+	{
+		scanf("%d%d", &a, &b);
+		arr[a].push_back(b);
+		arr[b].push_back(a);
+		coun[a]++;
+		coun[b]++;
+	}
+	for (int i = 1; i <= lin; i++)
+	{
+		if (coun[i] == 1)
+		{
+			coun[i]--;
+			dfs(i, 0);
+		}
+	}
+	int first = 0;
+	for (int i = 1; i <= lin; i++)
+	{
+		if (coun[i])
+		{
+			if (first)
+				printf(" ");
+			first = 1;
+			printf("%d", i);
+		}
+	}
+	printf("\n");
+	return 0;
+}
