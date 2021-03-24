@@ -1,0 +1,44 @@
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+#include<iostream>
+#include<sstream>
+#include<map>
+#include<vector>
+using namespace std;
+int arr[200][200];
+int main()
+{
+	int n;
+	memset(arr, 0, sizeof(arr));
+	cin >> n;
+	for(int i=1;i<=n;i++)
+		for (int j = 1; j <= i; j++)
+			cin >> arr[i][j];
+	if (n % 2 == 1)
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			if (i != n / 2 + 1)
+				arr[n][i] = 0;
+		}
+	}
+	else
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			if (i != n / 2 + 1 && i != n / 2)
+				arr[n][i] = 0;
+		}
+	}
+	for (int i = n - 1; i >= 1; i--)
+		for (int j = 1; j <= i; j++)
+		{
+			if (max(arr[i + 1][j], arr[i + 1][j + 1]))
+				arr[i][j] += max(arr[i + 1][j], arr[i + 1][j + 1]);
+			else
+				arr[i][j] = 0;
+		}
+	cout << arr[1][1] << endl;
+	return 0;
+}
