@@ -1,0 +1,42 @@
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+#include<iostream>
+#include<sstream>
+#include<map>
+#include<vector>
+#include<cmath>
+using namespace std;
+char all[100100];
+long long t[26];
+long long sum=0,num=0;
+int main()
+{
+    memset(t,0,sizeof(t));
+    int size,last;
+    scanf("%s",all);
+    size=strlen(all);
+    for(int i=0; i<size; i++)
+    {
+        t[all[i]-'a']++;
+        if(t[all[i]-'a']==1)
+            num++;
+        else if(t[all[i]-'a']==2)
+            num--;
+        sum+=num;
+    }
+    last=sum;
+    for(int i,j=1; j<size; j++)
+    {
+        last--;
+        for(i=j; i<size&&all[i]!=all[j-1]; i++)
+            last--;
+        if(i<size)
+            last++;
+        for(i++; i<size&&all[i]!=all[j-1]; i++)
+            last++;
+        sum+=last;
+    }
+    cout<<sum;
+    return 0;
+}
