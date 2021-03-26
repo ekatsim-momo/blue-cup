@@ -1,0 +1,134 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+using namespace std;
+bool yes[9][9][9][9][9][9][9][9];
+char arr[5][5], ans[5][5];
+struct E
+{
+	char a[5][5];
+	int x, y;
+	bool operator == (const E& l) const
+	{
+		for (int i = 1; i <= 3; i++)
+			for (int j = 1; j <= 3; j++)
+			{
+				if (l.a[i][j] != a[i][j])
+					return false;
+			}
+		return true;
+	}
+}a, an, lin;
+bool ok(E q,int x,int y)
+{
+	swap(q.a[q.x + x][q.y + y], q.a[q.x][q.y]);
+	if (yes[q.a[1][1] - '0'][q.a[1][2] - '0'][q.a[1][3] - '0'][q.a[2][1] - '0'][q.a[2][2] - '0'][q.a[2][3] - '0'][q.a[3][1] - '0'][q.a[3][2] - '0'])
+	{
+		yes[q.a[1][1] - '0'][q.a[1][2] - '0'][q.a[1][3] - '0'][q.a[2][1] - '0'][q.a[2][2] - '0'][q.a[2][3] - '0'][q.a[3][1] - '0'][q.a[3][2] - '0'] = false;
+		return true;
+	}
+	return false;
+}
+void read()
+{
+	for (int i = 1; i <= 3; i++)
+	{
+		arr[i][0] = ' ';
+		for (int j = 1; j <= 3; j++)
+		{
+			scanf("%c", &arr[i][j]);
+			if (arr[i][j] == '.')
+			{
+				arr[i][j] = '0';
+				a.x = i;
+				a.y = j;
+			}
+		}
+	}
+	getchar();
+	for (int i = 1; i <= 3; i++)
+	{
+		ans[i][0] = ' ';
+		for (int j = 1; j <= 3; j++)
+		{
+			scanf("%c", &ans[i][j]);
+			if (ans[i][j] == '.')
+			{
+				ans[i][j] = '0';
+				an.x = i;
+				an.y = j;
+			}
+		}
+	}
+}
+void bfs()
+{
+	int num = 0;
+	memcpy(a.a, arr, sizeof(arr));
+	memcpy(an.a, ans, sizeof(ans));
+	queue<E>q;
+	q.push(a);
+	yes[a.a[1][1] - '0'][a.a[1][2] - '0'][a.a[1][3] - '0'][a.a[2][1] - '0'][a.a[2][2] - '0'][a.a[2][3] - '0'][a.a[3][1] - '0'][a.a[3][2] - '0'] = false;
+	while (1)
+	{
+		queue<E>next;
+		while (!q.empty())
+		{
+			if (num > 32)
+			{
+				cout << "-1";
+				return;
+			}
+			a = q.front();
+			q.pop();
+			if (a == an)
+			{
+				cout << num;
+				return;
+			}
+			lin = a;
+			if (a.a[a.x - 1][a.y] != ' '&&a.a[a.x - 1][a.y] != 0&&ok(a,-1,0))
+			{
+				swap(a.a[a.x][a.y], a.a[a.x - 1][a.y]);
+				a.x--;
+				next.push(a);
+				a = lin;
+			}
+			if (a.a[a.x + 1][a.y] != ' '&&a.a[a.x + 1][a.y] != 0&&ok(a,1,0))
+			{
+				swap(a.a[a.x][a.y], a.a[a.x + 1][a.y]);
+				a.x++;
+				next.push(a);
+				a = lin;
+			}
+			if (a.a[a.x][a.y - 1] != ' '&&a.a[a.x][a.y - 1] != 0&&ok(a,0,-1))
+			{
+				swap(a.a[a.x][a.y], a.a[a.x][a.y - 1]);
+				a.y--;
+				next.push(a);
+				a = lin;
+			}
+			if (a.a[a.x][a.y + 1] != ' '&&a.a[a.x][a.y + 1] != 0&&ok(a,0,1))
+			{
+				swap(a.a[a.x][a.y], a.a[a.x][a.y + 1]);
+				a.y++;
+				next.push(a);
+				a = lin;
+			}
+		}
+		num++;
+		q = next;
+	}
+}
+int main()
+{
+	memset(yes, true, sizeof(yes));
+	int n;
+	read();
+	bfs();
+	return 0;
+}
