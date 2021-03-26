@@ -1,0 +1,23 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+int arr[100100],brr[100100],crr[100100];
+int main()
+{
+    long long sum=0;
+    memset(arr,0,sizeof(arr));
+    memset(brr,0,sizeof(brr));
+    memset(crr,0,sizeof(crr));
+    int n,k;
+    cin>>n>>k;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>arr[i];
+        brr[i]=(brr[i-1]+arr[i])%k;
+        sum+=(crr[brr[i]]++);
+    }
+    cout<<sum+crr[0]<<endl;
+    return 0;
+}
