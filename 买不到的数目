@@ -1,0 +1,29 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+#include<cstdio>
+#include<cstring>
+#include<queue>
+#include<map>
+using namespace std;
+bool arr[100010];
+int main()
+{
+	int a, b;
+	memset(arr, false, sizeof(arr));
+	cin >> a >> b;
+	for (int i = 0;i*a<=100000;i++)
+	{
+		for (int j = 0; j*b + i * a <= 100000; j++)
+			arr[i*a + j * b] = true;
+	}
+	for (int i = 100000; i >= 0; i--)
+		if (!arr[i])
+		{
+			cout << i;
+			return 0;
+		}
+	return 0;
+}
+//标准解法：cout<<a*b-a-b;
