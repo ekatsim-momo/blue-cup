@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <queue>
+#include <string>
+#include <map>
+using namespace std;
+vector<pair<int, int> >all[10010];
+bool yes[10010];
+int ans = 0,a;
+void dfs(int i, int num)
+{
+	int size = all[i].size();
+	for (int j = 0; j < size; j++)
+	{
+		if (yes[all[i][j].first])
+		{
+			yes[all[i][j].first] = false;
+			dfs(all[i][j].first, num + all[i][j].second);
+			yes[all[i][j].first] = true;
+		}
+	}
+	if (ans < num)
+	{
+		ans = num;
+		a = i;
+	}
+}
+int main()
+{
+	int n, p, q, d,t=0;
+	scanf("%d", &n);
+	for (int i = 1; i < n; i++)
+	{
+		scanf("%d%d%d", &p, &q, &d);
+		all[p].push_back(make_pair(q, d));
+		all[q].push_back(make_pair(p, d));
+	}
+	memset(yes, true, sizeof(yes));
+	yes[1] = false;
+	dfs(1, 0);
+	memset(yes, true, sizeof(yes));
+	yes[a] = false;
+	dfs(a, 0);
+	printf("%d\n", (ans + 1)*ans / 2 + ans * 10);
+	return 0;
+}
